@@ -1,0 +1,330 @@
+*
+{
+    margin: 0;
+    padding: 0;
+    
+}
+section
+{
+   
+    top:0;
+    left:0;
+    width:100%;
+    height:100vh;
+    overflow: hidden;
+    position: fixed;
+
+}
+.pattern
+{
+    position: relative;
+    transform-style: preserve-3d;
+    perspective: 1000px;
+    animation:animateBg 10s ease-in-out infinite;
+
+}
+@keyframes animateBg
+{
+    0%,100%
+    {
+        transform:scale(1.6) rotate(-20deg);
+    }
+    50%
+    {
+        transform:scale(1.6) rotate(20deg);
+    }
+}
+.pattern .face
+{
+    position: relative;
+    width:100%;
+    height:50vh; 
+    background: url(check.jpg);
+    background-size:100px 100px;
+    animation:animate 1s linear infinite;
+}
+@keyframes animate
+{
+    0%
+    {
+        background-position: 0;
+    }
+    100%
+    {
+        background-position: 100px;
+    }
+}
+.pattern .face.face2
+{
+    
+    height:100vh;
+    transform-origin:top;
+    transform: rotateX(70deg);
+}
+.pattern .face1:before
+{
+    content: '';
+    position: absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:125px;
+    background:linear-gradient(0deg,rgba(0,0,0,0.5),transparent);
+}
+.pattern .face2:before
+{
+    content: '';
+    position: absolute;
+    bottom:top;
+    left:0;
+    width:100%;
+    height:125px;
+    background:linear-gradient(180deg,rgba(0,0,0,0.5),transparent);
+}
+.button1 {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+  }
+  .button1 button
+  {
+   text-transform: uppercase;
+    background: linear-gradient(to right, gold, darkorange);
+	color: white;
+    --width: 600px;
+	--height: calc(var(--width) / 4);
+	width: var(--width);
+	height: var(--height);
+	text-align: center;
+	line-height: var(--height);
+	font-size: calc(var(--height) / 3);
+	font-family: sans-serif;
+	letter-spacing: 0.2em;
+	border: 1px solid darkgoldenrod;
+	border-radius: 2em;
+	transform: perspective(500px) rotateY(-15deg);
+	text-shadow: 6px 3px 2px rgba(0, 0, 0, 0.2);
+	box-shadow: 2px 0 0 5px rgba(0, 0, 0, 0.2);
+	transition: 0.5s;
+	position: relative;
+	overflow: hidden;
+
+  }
+  .button1 button:hover {
+	transform: perspective(500px) rotateY(15deg);
+	text-shadow: -6px 3px 2px rgba(0, 0, 0, 0.2);
+	box-shadow: -2px 0 0 5px rgba(0, 0, 0, 0.2);
+}
+.button1 button::before {
+	content: '';
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(to right, transparent, white, transparent);
+	left: -100%;
+	transition: 0.5s;
+}
+.button1 button::before {
+	left: 100%;
+}
+
+
+
+
+.button2 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+  }
+  .button2 button
+  {
+   text-transform: uppercase;
+    background: linear-gradient(to right, gold, darkorange);
+	color: white;
+    --width: 600px;
+	--height: calc(var(--width) / 4);
+	width: var(--width);
+	height: var(--height);
+	text-align: center;
+	line-height: var(--height);
+	font-size: calc(var(--height) / 3);
+	font-family: sans-serif;
+	letter-spacing: 0.2em;
+	border: 1px solid darkgoldenrod;
+	border-radius: 2em;
+	transform: perspective(500px) rotateY(-15deg);
+	text-shadow: 6px 3px 2px rgba(0, 0, 0, 0.2);
+	box-shadow: 2px 0 0 5px rgba(0, 0, 0, 0.2);
+	transition: 0.5s;
+	position: relative;
+	overflow: hidden;
+
+  }
+  .button2 button:hover {
+	transform: perspective(500px) rotateY(15deg);
+	text-shadow: -6px 3px 2px rgba(0, 0, 0, 0.2);
+	box-shadow: -2px 0 0 5px rgba(0, 0, 0, 0.2);
+}
+.button2 button::before {
+	content: '';
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(to right, transparent, white, transparent);
+	left: -100%;
+	transition: 0.5s;
+}
+.button2 button::before {
+	left: 100%;
+}
+
+
+
+
+.button3 {
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+  }
+  .button3 button
+  {
+   text-transform: uppercase;
+    background: linear-gradient(to right, gold, darkorange);
+	color: white;
+    --width: 600px;
+	--height: calc(var(--width) / 4);
+	width: var(--width);
+	height: var(--height);
+	text-align: center;
+	line-height: var(--height);
+	font-size: calc(var(--height) / 3);
+	font-family: sans-serif;
+	letter-spacing: 0.2em;
+	border: 1px solid darkgoldenrod;
+	border-radius: 2em;
+	transform: perspective(500px) rotateY(-15deg);
+	text-shadow: 6px 3px 2px rgba(0, 0, 0, 0.2);
+	box-shadow: 2px 0 0 5px rgba(0, 0, 0, 0.2);
+	transition: 0.5s;
+	position: relative;
+	overflow: hidden;
+
+  }
+  .button3 button:hover {
+	transform: perspective(500px) rotateY(15deg);
+	text-shadow: -6px 3px 2px rgba(0, 0, 0, 0.2);
+	box-shadow: -2px 0 0 5px rgba(0, 0, 0, 0.2);
+}
+.button3 button::before {
+	content: '';
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(to right, transparent, white, transparent);
+	left: -100%;
+	transition: 0.5s;
+}
+.button3 button::before {
+	left: 100%;
+}
+
+.popup
+{
+position    :fixed;
+top:50%;
+left:50%;
+transform: translate(-50%,50);
+border:1px solid black;
+border-radius: 10px;
+}
+
+
+
+
+
+*, *::after, *::before {
+    box-sizing: border-box;
+  }
+  
+  .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: 200ms ease-in-out;
+    border: 1px solid black;
+    border-radius: 10px;
+    z-index: 10;
+    background-color: aliceblue;
+    width: 800px;
+    height:500px;
+    text-align: center;
+    
+  }
+  
+  .modal.active {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  
+  .modal-header {
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid black;
+  }
+  
+  .modal-header .title {
+    font-size: 2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+
+
+  }
+  
+  .modal-header .close-button {
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+  
+  .modal-body {
+    padding: 10px 15px;
+   
+    
+  }
+  .modal-body p button{
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size:15px;
+    border-radius: 2px;
+
+    
+  }
+  
+  
+  #overlay {
+    position: fixed;
+    opacity: 0;
+    transition: 200ms ease-in-out;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .5);
+    pointer-events: none;
+  }
+  
+  #overlay.active {
+    opacity: 1;
+    pointer-events: all;
+  }

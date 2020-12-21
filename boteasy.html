@@ -1,0 +1,1601 @@
+<html>
+
+<body>
+
+
+    <head>
+        <link rel="stylesheet" type="text/css" href="table.css">
+    </head>
+
+    <div class="back"><br><br>
+        <p1 id="back" onclick="back()">back </p1>
+        <p2 id="turn" onclick="surrender()">surrender</p2>
+    </div>
+    <h1 id="show"></h1>
+    <script>
+        ir = 0;
+        id = 0;
+        red = 12;
+        blue = 12;
+
+        var queryString = decodeURIComponent(window.location.search);
+        queryString = queryString.substring(1);
+        var queries = queryString.split("&");
+        var color1 = queries[0];
+        var color2 = queries[1];
+        var crown1 = queries[2];
+        var crown2 = queries[3];
+
+
+        var posChip = new Array(8);
+
+        for (var i = 0; i < posChip.length; i++) {
+            posChip[i] = new Array(8);
+        }
+        for (r = 0; r < posChip.length; r++) {
+            for (c = 0; c < posChip.length; c++) {
+                posChip[r][c] = "n";
+            }
+        }
+        posChip[0][0] = "n";
+        posChip[0][1] = "y";
+        posChip[0][2] = "n";
+        posChip[0][3] = "y";
+        posChip[0][4] = "n";
+        posChip[0][5] = "y";
+        posChip[0][6] = "n";
+        posChip[0][7] = "y";
+        posChip[1][0] = "y";
+        posChip[1][1] = "n";
+        posChip[1][2] = "y";
+        posChip[1][3] = "n";
+        posChip[1][4] = "y";
+        posChip[1][5] = "n";
+        posChip[1][6] = "y";
+        posChip[1][7] = "n";
+        posChip[2][0] = "n";
+        posChip[2][1] = "y";
+        posChip[2][2] = "n";
+        posChip[2][3] = "y";
+        posChip[2][4] = "n";
+        posChip[2][5] = "y";
+        posChip[2][6] = "n";
+        posChip[2][7] = "y";
+
+        posChip[5][0] = "y1";
+        posChip[5][1] = "n";
+        posChip[5][2] = "y1";
+        posChip[5][3] = "n";
+        posChip[5][4] = "y1";
+        posChip[5][5] = "n";
+        posChip[5][6] = "y1";
+        posChip[5][7] = "n";
+        posChip[6][0] = "n";
+        posChip[6][1] = "y1";
+        posChip[6][2] = "n";
+        posChip[6][3] = "y1";
+        posChip[6][4] = "n";
+        posChip[6][5] = "y1";
+        posChip[6][6] = "n";
+        posChip[6][7] = "y1";
+        posChip[7][0] = "y1";
+        posChip[7][1] = "n";
+        posChip[7][2] = "y1";
+        posChip[7][3] = "n";
+        posChip[7][4] = "y1";
+        posChip[7][5] = "n";
+        posChip[7][6] = "y1";
+        posChip[7][7] = "n";
+
+        /* posChip[6][3] = "n";
+         posChip[3][2] = "y2";
+         posChip[3][4] = "y2";
+         posChip[5][6] = "y2";
+         posChip[3][6] = "y2";
+         posChip[5][4] = "y2";
+         posChip[5][2] = "y2";
+         posChip[2][3] = "y2";
+         posChip[2][5] = "y3";
+         ;
+ 
+
+
+       /* posChip[5][6] = "y";
+        posChip[6][5] = "y2";
+        posChip[6][3] = "y1";
+        posChip[6][1] = "y2";
+        posChip[4][1] = "y1";*/
+
+
+
+
+        /*posChip[0][3] = "y";
+        posChip[3][4] = "y";
+
+        posChip[5][2] = "y";
+
+        posChip[5][6] = "y";
+
+        posChip[4][3] = "y";
+        posChip[6][5] = "y";*/
+        /* posChip[7][0] = "y3";
+         posChip[7][6] = "y3";
+         posChip[7][4] = "y3";
+         posChip[2][7] = "y2";*/
+
+        /* posChip[6][3] = "y2";
+         posChip[6][5] = "y2";
+         posChip[6][7] = "y2";
+         posChip[5][6] = "y";
+         posChip[4][3] = "y2";
+         posChip[2][3] = "y2";
+         posChip[1][6] = "y1";*/
+
+        var idTable = new Array(8);
+
+        for (var i = 0; i < idTable.length; i++) {
+            idTable[i] = new Array(8);
+        }
+
+        for (var r = 0; r < idTable.length; r++) {
+            for (var c = 0; c < idTable.length; c++) {
+                idTable[r][c] = "t" + id++;
+            }
+        }
+        status = "w";
+        turn = "player1";
+        drawgame();
+        get = "";
+        function back() {
+            window.location.href = 'chess.html';
+        }
+        function surrender() {
+            if (turn == "player1") {
+                window.location.href = 'botwin.html';
+            }
+        }
+        function drawgame() {
+
+            color = "1";
+            keep = "";
+            if (red == 0) {
+                window.location.href = 'playerwin.html';
+            }
+            else if (blue == 0) {
+                window.location.href = 'botwin.html';
+            }
+            keep += "<div class=table><table border=0 width=50% height=50%>";
+            for (r = 0; r < 8; r++) {
+                keep += "<tr>";
+                for (c = 0; c < 8; c++) {
+                    if (color == 1) {
+                        keep += "<td bgcolor=" + color1 + " id=" + idTable[r][c] + " width=80 height=80 align=center onclick=checkclick(" + r + "," + c + ") ></td > ";
+                        color = 2;
+                    }
+                    else if (color == 2) {
+                        keep += "<td bgcolor=" + color2 + " id=" + idTable[r][c] + " width=80 height=80 align=center onclick=checkclick(" + r + "," + c + ") ></td > ";
+                        color = 1;
+                    }
+
+                    if (c == 7 && color == 1) {
+                        color = 2;
+                    }
+
+                    else if (c == 7 && color == 2) {
+                        color = 1;
+                    }
+
+
+                }
+
+                keep += "</tr>";
+            }
+            keep += "</table> </div>";
+            document.getElementById('show').innerHTML = keep;
+            for (r = 0; r < 8; r++) {
+                for (c = 0; c < 8; c++) {
+                    if (posChip[r][c] == "y") {
+                        document.getElementById(idTable[r][c]).innerHTML = "<img src=chip/chip.png width=40 height=40>";
+                    }
+                    else if (posChip[r][c] == "y1") {
+                        document.getElementById(idTable[r][c]).innerHTML = "<img src=" + crown1 + " width=40 height=40>";
+                    }
+                    else if (posChip[r][c] == "y2") {
+                        document.getElementById(idTable[r][c]).innerHTML = "<img src=" + crown2 + " width=40 height=40>";
+                    }
+                    else if (posChip[r][c] == "y3") {
+                        document.getElementById(idTable[r][c]).innerHTML = "<img src=chip/crown2.png width=40 height=40>";
+                    }
+
+
+
+
+                }
+            }
+        }
+        attack = "n";
+        check1 = 0;
+        check2 = 0;
+
+        function checkclick(r, c) {
+            if (attack == "y" && r == check1 && c == check2) {
+                move(r, c);
+            }
+            else if (attack == "n") {
+                move(r, c);
+            }
+        }
+        function move(r, c) {
+            if (turn == "player1") {
+                if (posChip[r][c] == "y1" || posChip[r][c] == "y2") {
+                    //  posChip[r][c] = "n";
+
+                    oldpos = r;
+                    oldc = c;
+                    attack = "n";
+                }
+                else if (posChip[oldpos][oldc] == "y1") {
+                    if ((posChip[r + 1][c + 1] == "y" || posChip[r + 1][c + 1] == "y3") && oldc == c + 2 && posChip[r][c] == "n") {
+                        if (r == 0) {
+                            posChip[r][c] = "y2";
+                        }
+                        else {
+                            posChip[r][c] = posChip[oldpos][oldc];
+                        }
+                        posChip[r + 1][c + 1] = "n";
+                        posChip[oldpos][oldc] = "n";
+                        red -= 1;
+                        if (r > 1) {
+                            if ((posChip[r - 1][c - 1] == "y" || posChip[r - 1][c - 1] == "y3") && posChip[r - 2][c - 2] == "n") {
+                                turn = "player1";
+                                check1 = r;
+                                check2 = c;
+                                attack = "y";
+
+                            }
+                            else if ((posChip[r - 1][c + 1] == "y" || posChip[r - 1][c + 1] == "y3") && posChip[r - 2][c + 2] == "n") {
+                                turn = "player1";
+                                check1 = r;
+                                check2 = c;
+                                attack = "y";
+                            }
+                            else {
+                                turn = "player2";
+                            }
+                        }
+                        else {
+                            if (posChip[r][c] == "y2" && (posChip[r + 1][c - 1] == "y" || posChip[r + 1][c - 1] == "y3") && posChip[r + 2][c - 2] == "n") {
+                                turn = "player1";
+                            }
+                            else {
+                                turn = "player2";
+                            }
+                        }
+
+
+                    }
+                    else if ((posChip[r + 1][c - 1] == "y" || posChip[r + 1][c - 1] == "y3") && oldc == c - 2 && posChip[r][c] == "n") {
+                        if (r == 0) {
+                            posChip[r][c] = "y2";
+                        }
+                        else {
+                            posChip[r][c] = posChip[oldpos][oldc];
+                        }
+                        posChip[r + 1][c - 1] = "n";
+                        posChip[oldpos][oldc] = "n";
+                        red -= 1;
+                        if (r > 1) {
+                            if ((posChip[r - 1][c + 1] == "y" || posChip[r - 1][c + 1] == "y3") && posChip[r - 2][c + 2] == "n") {
+                                turn = "player1";
+                                check1 = r;
+                                check2 = c;
+                                attack = "y";
+                            }
+                            else if ((posChip[r - 1][c - 1] == "y" || posChip[r - 1][c - 1] == "y3") && posChip[r - 2][c - 2] == "n") {
+                                turn = "player1";
+                                check1 = r;
+                                check2 = c;
+                                attack = "y";
+                            }
+                            else {
+                                turn = "player2";
+                            }
+                        }
+                        else {
+                            if (posChip[r][c] == "y2" && (posChip[r + 1][c + 1] == "y" || posChip[r + 1][c + 1] == "y3") && posChip[r + 2][c + 2] == "n") {
+                                turn = "player1";
+                            }
+                            else {
+                                turn = "player2";
+                            }
+                        }
+                    }
+                }
+                else if (posChip[oldpos][oldc] == "y2") {
+                    if (r > 1 && oldpos < r) {
+                        if ((posChip[r - 1][c - 1] == "y" || posChip[r - 1][c - 1] == "y3") && oldc == c - 2 && posChip[r][c] == "n" && oldpos < r) {
+                            posChip[r][c] = posChip[oldpos][oldc];
+                            posChip[r - 1][c - 1] = "n";
+                            posChip[oldpos][oldc] = "n";
+                            red -= 1;
+                            if (r < 6) {
+                                if ((posChip[r + 1][c + 1] == "y" || posChip[r + 1][c + 1] == "y3") && posChip[r + 2][c + 2] == "n") {
+                                    turn = "player1";
+                                    check1 = r;
+                                    check2 = c;
+                                    attack = "y";
+
+                                }
+                                else if ((posChip[r + 1][c - 1] == "y" || posChip[r + 1][c - 1] == "y3") && posChip[r + 2][c - 2] == "n") {
+                                    turn = "player1";
+                                    check1 = r;
+                                    check2 = c;
+                                    attack = "y";
+                                }
+                                else if ((posChip[r - 1][c - 1] == "y" || posChip[r - 1][c - 1] == "y3") && posChip[r - 2][c - 2] == "n") {
+                                    turn = "player1";
+                                    check1 = r;
+                                    check2 = c;
+                                    attack = "y";
+
+                                }
+                                else if ((posChip[r - 1][c + 1] == "y" || posChip[r - 1][c + 1] == "y3") && posChip[r - 2][c + 2] == "n") {
+                                    turn = "player1";
+                                    check1 = r;
+                                    check2 = c;
+                                    attack = "y";
+                                }
+                                else {
+                                    turn = "player2";
+                                }
+                            }
+                            else {
+                                if ((posChip[r - 1][c + 1] == "y" || posChip[r - 1][c + 1] == "y3") && posChip[r - 2][c + 2] == "n") {
+                                    turn = "player1";
+                                }
+                                else {
+                                    turn = "player2";
+                                }
+                            }
+
+                        }
+
+                        else if ((posChip[r - 1][c + 1] == "y" || posChip[r - 1][c + 1] == "y3") && oldc == c + 2 && posChip[r][c] == "n" && oldpos < r) {
+                            posChip[r][c] = posChip[oldpos][oldc];
+                            posChip[r - 1][c + 1] = "n";
+                            posChip[oldpos][oldc] = "n";
+                            red -= 1;
+                            if (r < 6) {
+                                if ((posChip[r + 1][c - 1] == "y" || posChip[r + 1][c - 1] == "y3") && posChip[r + 2][c - 2] == "n") {
+                                    turn = "player1";
+                                    check1 = r;
+                                    check2 = c;
+                                    attack = "y";
+                                }
+                                else if ((posChip[r + 1][c + 1] == "y" || posChip[r + 1][c + 1] == "y3") && posChip[r + 2][c + 2] == "n") {
+                                    turn = "player1";
+                                    check1 = r;
+                                    check2 = c;
+                                    attack = "y";
+                                }
+                                else if ((posChip[r - 1][c - 1] == "y" || posChip[r - 1][c - 1] == "y3") && posChip[r - 2][c - 2] == "n") {
+                                    turn = "player1";
+                                    check1 = r;
+                                    check2 = c;
+                                    attack = "y";
+
+                                }
+                                else if ((posChip[r - 1][c + 1] == "y" || posChip[r - 1][c + 1] == "y3") && posChip[r - 2][c + 2] == "n") {
+                                    turn = "player1";
+                                    check1 = r;
+                                    check2 = c;
+                                    attack = "y";
+                                }
+                                else {
+                                    turn = "player2";
+                                }
+                            }
+                            else {
+                                if ((posChip[r - 1][c - 1] == "y" || posChip[r - 1][c - 1] == "y3") && posChip[r - 2][c - 2] == "n") {
+                                    turn = "player1";
+                                }
+                                else {
+                                    turn = "player2";
+                                }
+                            }
+                        }
+                    }
+                    else if (r < 6 && oldpos > r) {
+                        if ((posChip[r + 1][c + 1] == "y" || posChip[r + 1][c + 1] == "y3") && oldc == c + 2 && posChip[r][c] == "n" && oldpos > r) {
+                            posChip[r][c] = posChip[oldpos][oldc];
+                            posChip[r + 1][c + 1] = "n";
+                            posChip[oldpos][oldc] = "n";
+                            red -= 1;
+                            if (r > 1) {
+                                if ((posChip[r - 1][c - 1] == "y" || posChip[r - 1][c - 1] == "y3") && posChip[r - 2][c - 2] == "n") {
+                                    turn = "player1";
+                                    check1 = r;
+                                    check2 = c;
+                                    attack = "y";
+                                }
+                                else if ((posChip[r - 1][c + 1] == "y" || posChip[r - 1][c + 1] == "y3") && posChip[r - 2][c + 2] == "n") {
+                                    turn = "player1";
+                                    check1 = r;
+                                    check2 = c;
+                                    attack = "y";
+                                }
+                                else if ((posChip[r + 1][c - 1] == "y" || posChip[r + 1][c - 1] == "y3") && posChip[r + 2][c - 2] == "n") {
+                                    turn = "player1";
+                                    check1 = r;
+                                    check2 = c;
+                                    attack = "y";
+                                }
+                                else if ((posChip[r + 1][c + 1] == "y" || posChip[r + 1][c + 1] == "y3") && posChip[r + 2][c + 2] == "n") {
+                                    turn = "player1";
+                                    check1 = r;
+                                    check2 = c;
+                                    attack = "y";
+                                }
+                                else {
+                                    turn = "player2";
+                                }
+                            }
+                            else {
+                                if ((posChip[r + 1][c - 1] == "y" || posChip[r + 1][c - 1] == "y3") && posChip[r + 2][c - 2] == "n") {
+                                    turn = "player1";
+                                }
+                                else {
+                                    turn = "player2";
+                                }
+                            }
+                        }
+
+
+
+                        else if ((posChip[r + 1][c - 1] == "y" || posChip[r + 1][c - 1] == "y3") && oldc == c - 2 && posChip[r][c] == "n" && oldpos > r) {
+                            posChip[r][c] = posChip[oldpos][oldc];
+                            posChip[r + 1][c - 1] = "n";
+                            posChip[oldpos][oldc] = "n";
+                            red -= 1;
+                            if (r > 1) {
+                                if ((posChip[r - 1][c + 1] == "y" || posChip[r - 1][c + 1] == "y3") && posChip[r - 2][c + 2] == "n") {
+                                    turn = "player1";
+                                    check1 = r;
+                                    check2 = c;
+                                    attack = "y";
+                                }
+                                else if ((posChip[r - 1][c - 1] == "y" || posChip[r - 1][c - 1] == "y3") && posChip[r - 2][c - 2] == "n") {
+                                    turn = "player1";
+                                    check1 = r;
+                                    check2 = c;
+                                    attack = "y";
+                                }
+                                else if ((posChip[r + 1][c - 1] == "y" || posChip[r + 1][c - 1] == "y3") && posChip[r + 2][c - 2] == "n") {
+                                    turn = "player1";
+                                    check1 = r;
+                                    check2 = c;
+                                    attack = "y";
+                                }
+                                else if ((posChip[r + 1][c + 1] == "y" || posChip[r + 1][c + 1] == "y3") && posChip[r + 2][c + 2] == "n") {
+                                    turn = "player1";
+                                    check1 = r;
+                                    check2 = c;
+                                    attack = "y";
+                                }
+                                else {
+                                    turn = "player2";
+                                }
+                            }
+
+                            else {
+                                if ((posChip[r + 1][c + 1] == "y" || posChip[r + 1][c + 1] == "y3") && posChip[r + 2][c + 2] == "n") {
+                                    turn = "player1";
+                                }
+                                else {
+                                    turn = "player2";
+                                }
+                            }
+
+                        }
+                    }
+
+
+                }
+
+
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                if (posChip[r][c] == "n" && turn == "player1") {
+
+                    if (oldc == 0 && oldpos == r + 1 && c == 1) {
+                        if (c == 1) {
+                            if (r == 0) {
+                                posChip[r][c] = "y2";
+                            }
+                            else {
+                                posChip[r][c] = posChip[oldpos][oldc];
+                            }
+
+                        }
+                        posChip[oldpos][oldc] = "n";
+                        turn = "player2";
+                    }
+                    else if (oldc == 1 && oldpos == r + 1) {
+                        if (c == 0) {
+                            if (r == 0) {
+                                posChip[r][c] = "y2";
+                            }
+                            else {
+                                posChip[r][c] = posChip[oldpos][oldc];
+                            }
+                        }
+                        else if (c == 2) {
+                            if (r == 0) {
+                                posChip[r][c] = "y2";
+                            }
+                            else {
+                                posChip[r][c] = posChip[oldpos][oldc];
+                            }
+                        }
+                        posChip[oldpos][oldc] = "n";
+                        turn = "player2";
+
+                    }
+                    else if (oldc == 2 && oldpos == r + 1 && (c == 1 || c == 3)) {
+                        if (c == 1) {
+                            if (r == 0) {
+                                posChip[r][c] = "y2";
+                            }
+                            else {
+                                posChip[r][c] = posChip[oldpos][oldc];
+                            }
+                        }
+                        else if (c == 3) {
+                            if (r == 0) {
+                                posChip[r][c] = "y2";
+                            }
+                            else {
+                                posChip[r][c] = posChip[oldpos][oldc];
+                            }
+                        }
+
+                        posChip[oldpos][oldc] = "n";
+                        turn = "player2";
+                    }
+                    else if (oldc == 3 && oldpos == r + 1 && (c == 2 || c == 4)) {
+                        if (c == 2) {
+                            if (r == 0) {
+                                posChip[r][c] = "y2";
+                            }
+                            else {
+                                posChip[r][c] = posChip[oldpos][oldc];
+                            }
+                        }
+                        else if (c == 4) {
+                            if (r == 0) {
+                                posChip[r][c] = "y2";
+                            }
+                            else {
+                                posChip[r][c] = posChip[oldpos][oldc];
+                            }
+                        }
+                        posChip[oldpos][oldc] = "n";
+                        turn = "player2";
+                    }
+                    else if (oldc == 4 && oldpos == r + 1 && (c == 3 || c == 5)) {
+                        if (c == 3) {
+                            if (r == 0) {
+                                posChip[r][c] = "y2";
+                            }
+                            else {
+                                posChip[r][c] = posChip[oldpos][oldc];
+                            }
+                        }
+                        else if (c == 5) {
+                            if (r == 0) {
+                                posChip[r][c] = "y2";
+                            }
+                            else {
+                                posChip[r][c] = posChip[oldpos][oldc];
+                            }
+                        }
+                        posChip[oldpos][oldc] = "n";
+
+                        turn = "player2";
+                    }
+
+                    else if (oldc == 5 && oldpos == r + 1 && (c == 4 || c == 6)) {
+                        if (c == 4) {
+                            if (r == 0) {
+                                posChip[r][c] = "y2";
+                            }
+                            else {
+                                posChip[r][c] = posChip[oldpos][oldc];
+                            }
+                        }
+                        else if (c == 6) {
+                            if (r == 0) {
+                                posChip[r][c] = "y2";
+                            }
+                            else {
+                                posChip[r][c] = posChip[oldpos][oldc];
+                            }
+                        }
+                        posChip[oldpos][oldc] = "n";
+
+                        turn = "player2";
+                    }
+                    else if (oldc == 6 && oldpos == r + 1 && (c == 5 || c == 7)) {
+                        if (c == 5) {
+                            if (r == 0) {
+                                posChip[r][c] = "y2";
+
+                            }
+                            else {
+                                posChip[r][c] = posChip[oldpos][oldc];
+                            }
+                        }
+                        else if (c == 7) {
+                            if (r == 0) {
+                                posChip[r][c] = "y2";
+                            }
+                            else {
+                                posChip[r][c] = posChip[oldpos][oldc];
+                            }
+                        }
+                        posChip[oldpos][oldc] = "n";
+
+                        turn = "player2";
+                    }
+                    else if (oldc == 7 && oldpos == r + 1 && c == 6) {
+                        if (c == 6) {
+                            if (r == 0) {
+                                posChip[r][c] = "y2";
+                            }
+                            else {
+                                posChip[r][c] = posChip[oldpos][oldc];
+                            }
+                        }
+                        posChip[oldpos][oldc] = "n";
+
+                        turn = "player2";
+                    }
+                    /////////////////////////////////////////////////////////////////////////////////////////////
+                    else if (posChip[oldpos][oldc] == "y2") {
+                        if (oldc == 0 && oldpos == r - 1 && c == 1) {
+                            if (c == 1) {
+                                posChip[r][c] = posChip[oldpos][oldc];
+                            }
+
+                            posChip[oldpos][oldc] = "n";
+                            turn = "player2";
+                        }
+                        else if (oldpos == r - 1 && oldc == 1 && (c == 0 || c == 2)) {
+                            if (c == 0) {
+                                posChip[r][c] = posChip[oldpos][oldc];
+                            }
+                            else if (c == 2) {
+                                posChip[r][c] = posChip[oldpos][oldc];
+
+                            }
+                            posChip[oldpos][oldc] = "n";
+                            turn = "player2";
+
+                        }
+                        else if (oldc == 2 && oldpos == r - 1 && (c == 1 || c == 3)) {
+                            if (c == 1) {
+                                posChip[r][c] = posChip[oldpos][oldc];
+                            }
+                            else if (c == 3) {
+
+                                posChip[r][c] = posChip[oldpos][oldc];
+
+                            }
+                            posChip[oldpos][oldc] = "n";
+                            turn = "player2";
+                        }
+                        else if (oldpos == r - 1 && oldc == 3 && (c == 2 || c == 4)) {
+                            if (c == 2) {
+
+                                posChip[r][c] = posChip[oldpos][oldc];
+
+                            }
+                            else if (c == 4) {
+
+                                posChip[r][c] = posChip[oldpos][oldc];
+
+                            }
+                            posChip[oldpos][oldc] = "n";
+                            turn = "player2";
+                        }
+                        else if (oldpos == r - 1 && oldc == 4 && (c == 3 || c == 5)) {
+                            if (c == 3) {
+                                posChip[r][c] = posChip[oldpos][oldc];
+                            }
+                            else if (c == 5) {
+
+                                posChip[r][c] = posChip[oldpos][oldc];
+
+                            }
+                            posChip[oldpos][oldc] = "n";
+                            turn = "player2";
+                        }
+                        else if (oldpos == r - 1 && oldc == 5 && (c == 4 || c == 6)) {
+                            if (c == 4) {
+
+                                posChip[r][c] = posChip[oldpos][oldc];
+                            }
+                            else if (c == 6) {
+
+                                posChip[r][c] = posChip[oldpos][oldc];
+
+                            }
+                            posChip[oldpos][oldc] = "n";
+                            turn = "player2";
+                        }
+                        else if (oldpos == r - 1 && oldc == 6 && (c == 5 || c == 7)) {
+                            if (c == 5) {
+                                posChip[r][c] = posChip[oldpos][oldc];
+
+                            }
+                            else if (c == 7) {
+                                posChip[r][c] = posChip[oldpos][oldc];
+
+                            }
+                            posChip[oldpos][oldc] = "n";
+                            turn = "player2";
+                        }
+                        else if (oldpos == r - 1 && oldc == 7 && c == 6) {
+                            if (c == 6) {
+                                posChip[r][c] = posChip[oldpos][oldc];
+
+                            }
+                            posChip[oldpos][oldc] = "n";
+                            turn = "player2";
+                        }
+                    }
+
+                }
+                drawgame();
+                turn2();
+
+            }
+        }
+
+        //
+        done = 1;
+        function turn2() {
+            var count = 0;
+            var count1 = 0;
+            if (red == 0) {
+                window.location.href = 'bluewin.html';
+            }
+            else {
+                if (turn == "player2") {
+                    if (attack == "n") {
+                        do {
+                            do {
+                                r = Math.floor(Math.random() * 8);
+                                c = Math.floor(Math.random() * 8);
+                            } while (posChip[r][c] != "y" && posChip[r][c] != "y3");
+                            if (posChip[r][c] == "y") {
+                                if (r < 6) {
+                                    if ((posChip[r + 1][c + 1] == "y1" || posChip[r + 1][c + 1] == "y2") && posChip[r + 2][c + 2] == "n") {
+
+                                        break;
+                                    }
+                                    else if ((posChip[r + 1][c - 1] == "y1" || posChip[r + 1][c - 1] == "y2") && posChip[r + 2][c - 2] == "n") {
+                                        break;
+                                    }
+                                    else if (posChip[r + 1][c + 1] == "n" && posChip[r + 1][c - 1] == "n") {
+                                        break;
+                                    }
+                                    else if (posChip[r + 1][c + 1] == "n") {
+                                        break;
+                                    }
+                                    else if (posChip[r + 1][c - 1] == "n") {
+                                        break;
+                                    }
+                                }
+                                else if (r > 5) {
+                                    if (posChip[r + 1][c + 1] == "n") {
+                                        break;
+                                    }
+                                    else if (posChip[r + 1][c - 1] == "n") {
+                                        break;
+                                    }
+                                }
+
+                                if (posChip[r][c] == "y") {
+                                    posChip[r][c] = "check1";
+                                    count++;
+                                }
+                                else if (posChip[r][c] == "y3") {
+                                    posChip[r][c] = "check2";
+                                    count++;
+                                }
+                                if (count == red) {
+                                    window.location.href = 'playerwin.html';
+                                    break;
+                                }
+
+
+
+
+                            }
+                            else if (posChip[r][c] == "y3") {
+                                if (r > 1) {
+                                    if ((posChip[r - 1][c + 1] == "y1" || posChip[r - 1][c + 1] == "y2") && posChip[r - 2][c + 2] == "n") {
+                                        break;
+                                    }
+                                    else if ((posChip[r - 1][c - 1] == "y1" || posChip[r - 1][c - 1] == "y2") && posChip[r - 2][c - 2] == "n") {
+                                        break;
+                                    }
+                                    else if (posChip[r - 1][c - 1] == "n" && posChip[r - 1][c + 1] == "n") {
+                                        break;
+                                    }
+                                    else if (posChip[r - 1][c - 1] == "n") {
+                                        break;
+                                    }
+                                    else if (posChip[r - 1][c + 1] == "n") {
+                                        break;
+                                    }
+                                    else if (posChip[r + 1][c + 1] == "n") {
+                                        break;
+                                    }
+                                    else if (posChip[r + 1][c - 1] == "n") {
+                                        break;
+                                    }
+                                    else if ((posChip[r + 1][c + 1] == "y1" || posChip[r + 1][c + 1] == "y2") && posChip[r + 2][c + 2] == "n") {
+                                        break;
+                                    }
+                                    else if ((posChip[r + 1][c - 1] == "y1" || posChip[r + 1][c - 1] == "y2") && posChip[r + 2][c - 2] == "n") {
+                                        break;
+                                    }
+
+                                }
+                                else if (r < 6) {
+                                    if ((posChip[r + 1][c + 1] == "y1" || posChip[r + 1][c + 1] == "y2") && posChip[r + 2][c + 2] == "n") {
+                                        break;
+                                    }
+                                    else if ((posChip[r + 1][c - 1] == "y1" || posChip[r + 1][c - 1] == "y2") && posChip[r + 2][c - 2] == "n") {
+                                        break;
+                                    }
+                                    else if (posChip[r + 1][c + 1] == "n" && posChip[r + 1][c - 1] == "n") {
+                                        break;
+                                    }
+                                    else if (posChip[r + 1][c + 1] == "n") {
+                                        break;
+                                    }
+                                    else if (posChip[r + 1][c - 1] == "n") {
+                                        break;
+                                    }
+                                    else if (posChip[r - 1][c - 1] == "n") {
+                                        break;
+                                    }
+                                    else if (posChip[r - 1][c + 1] == "n") {
+                                        break;
+                                    }
+                                    else if ((posChip[r - 1][c + 1] == "y1" || posChip[r - 1][c + 1] == "y2") && posChip[r - 2][c + 2] == "n") {
+                                        break;
+                                    }
+                                    else if ((posChip[r - 1][c - 1] == "y1" || posChip[r - 1][c - 1] == "y2") && posChip[r - 2][c - 2] == "n") {
+                                        break;
+                                    }
+
+                                }
+                            }
+
+                        } while (done != 0);
+                    }
+                    if (count > 0) {
+                        do {
+                            do {
+                                r1 = Math.floor(Math.random() * 8);
+                                c1 = Math.floor(Math.random() * 8);
+                            } while (posChip[r1][c1] != "check1" && posChip[r1][c1] != "check2");
+                            if (posChip[r1][c1] == "check1") {
+                                posChip[r1][c1] = "y";
+                                count1++;
+                            }
+                            else if (posChip[r1][c1] == "check2") {
+                                posChip[r1][c1] = "y3";
+                                count1++;
+                            }
+                            if (count1 == count) {
+                                break;
+                            }
+                        } while (done != 0);
+                    }
+                    //drawgame();
+                    //    r = 2;
+                    //c = 1;
+                    if (posChip[r][c] == "y" || posChip[r][c] == "y3") {
+                        oldpos = r;
+                        oldc = c;
+                        // attack == "n";
+                    }
+                    if (posChip[r][c] == "y") {
+                        if (r < 6) {
+                            if (posChip[r + 1][c + 1] == "n" && posChip[r + 1][c - 1] == "n" && attack == "n") {
+                                choose = Math.floor(Math.random() * 2);
+                                if (choose == 0) {
+                                    r = r + 1;
+                                    c = c + 1;
+                                }
+                                else {
+                                    r = r + 1;
+                                    c = c - 1;
+                                }
+                            }
+                            else if (posChip[r + 1][c + 1] == "n" && posChip[r + 1][c - 1] == "n" && attack == "n") {
+                                choose = Math.floor(Math.random() * 2);
+                                if (choose == 0) {
+                                    r = r + 1;
+                                    c = c + 1;
+                                }
+                                else {
+                                    r = r + 1;
+                                    c = c - 1;
+                                }
+                            }
+                            else if (posChip[r + 1][c + 1] == "n" && attack == "n") {
+                                r = r + 1;
+                                c = c + 1;
+                            }
+                            else if (posChip[r + 1][c - 1] == "n" && attack == "n") {
+                                r = r + 1;
+                                c = c - 1;
+
+                            }
+                            else if ((posChip[r + 1][c + 1] == "y1" || posChip[r + 1][c + 1] == "y2") && posChip[r + 2][c + 2] == "n") {
+                                r = r + 2;
+                                c = c + 2;
+                                attack = "n";
+
+                            }
+                            else if ((posChip[r + 1][c - 1] == "y1" || posChip[r + 1][c - 1] == "y2") && posChip[r + 2][c - 2] == "n") {
+                                r = r + 2;
+                                c = c - 2;
+                                attack = "n";
+
+                            }
+                        }
+                        else {
+                            if (posChip[r + 1][c + 1] == "n") {
+                                r = r + 1;
+                                c = c + 1;
+                            }
+                            else if (posChip[r + 1][c - 1] == "n") {
+                                r = r + 1;
+                                c = c - 1;
+                            }
+                        }
+                    }
+                    else if (posChip[r][c] == "y3") {
+                        if (r > 1) {
+                            if ((posChip[r - 1][c + 1] == "y1" || posChip[r - 1][c + 1] == "y2") && posChip[r - 2][c + 2] == "n") {
+                                r = r - 2;
+                                c = c + 2;
+                                attack = "n";
+
+                            }
+                            else if ((posChip[r - 1][c - 1] == "y1" || posChip[r - 1][c - 1] == "y2") && posChip[r - 2][c - 2] == "n") {
+                                r = r - 2;
+                                c = c - 2;
+                                attack = "n";
+
+                            }
+
+                            else if (posChip[r - 1][c - 1] == "n" && posChip[r - 1][c + 1] == "n") {
+                                choose = Math.floor(Math.random() * 2);
+                                if (choose == 0) {
+                                    r = r - 1;
+                                    c = c - 1;
+                                }
+                                else {
+                                    r = r - 1;
+                                    c = c + 1;
+                                }
+                            }
+                            else if (posChip[r - 1][c - 1] == "n") {
+                                r = r - 1;
+                                c = c - 1;
+                            }
+                            else if (posChip[r - 1][c + 1] == "n") {
+                                r = r - 1;
+                                c = c + 1;
+                            }
+                            else if (posChip[r + 1][c + 1] == "n") {
+                                r = r + 1;
+                                c = c + 1;
+                            }
+                            else if (posChip[r + 1][c - 1] == "n") {
+                                r = r + 1;
+                                c = c - 1;
+                            }
+                            else if ((posChip[r + 1][c + 1] == "y1" || posChip[r + 1][c + 1] == "y2") && posChip[r + 2][c + 2] == "n") {
+
+                                r = r + 2;
+                                c = c + 2;
+                                attack = "n";
+
+                            }
+                            else if ((posChip[r + 1][c - 1] == "y1" || posChip[r + 1][c - 1] == "y2") && posChip[r + 2][c - 2] == "n") {
+                                r = r + 2;
+                                c = c - 2;
+                                attack = "n";
+
+                            }
+
+
+                        }
+                        else if (r < 6) {
+                            if ((posChip[r + 1][c + 1] == "y1" || posChip[r + 1][c + 1] == "y2") && posChip[r + 2][c + 2] == "n") {
+
+                                r = r + 2;
+                                c = c + 2;
+                                attack = "n";
+
+                            }
+                            else if ((posChip[r + 1][c - 1] == "y1" || posChip[r + 1][c - 1] == "y2") && posChip[r + 2][c - 2] == "n") {
+                                r = r + 2;
+                                c = c - 2;
+                                attack = "n";
+
+                            }
+                            else if (posChip[r + 1][c + 1] == "n" && posChip[r + 1][c - 1] == "n") {
+                                choose = Math.floor(Math.random() * 2);
+                                if (choose == 0) {
+                                    r = r + 1;
+                                    c = c + 1;
+                                }
+                                else {
+                                    r = r + 1;
+                                    c = c - 1;
+                                }
+                            }
+                            else if (posChip[r + 1][c + 1] == "n") {
+                                r = r + 1;
+                                c = c + 1;
+                            }
+                            else if (posChip[r + 1][c - 1] == "n") {
+                                r = r + 1;
+                                c = c - 1;
+                            }
+                            else if (posChip[r - 1][c - 1] == "n") {
+                                r = r - 1;
+                                c = c - 1;
+                            }
+                            else if (posChip[r - 1][c + 1] == "n") {
+                                r = r - 1;
+                                c = c + 1;
+                            }
+                            else if ((posChip[r - 1][c + 1] == "y1" || posChip[r - 1][c + 1] == "y2") && posChip[r - 2][c + 2] == "n") {
+                                r = r - 2;
+                                c = c + 2;
+                                attack = "n";
+                            }
+                            else if ((posChip[r - 1][c - 1] == "y1" || posChip[r - 1][c - 1] == "y2") && posChip[r - 2][c - 2] == "n") {
+                                r = r - 2;
+                                c = c - 2;
+                                attack = "n";
+                            }
+
+
+                        }
+
+
+                    }
+
+
+                    if (posChip[oldpos][oldc] == "y") {
+                        if ((posChip[r - 1][c - 1] == "y1" || posChip[r - 1][c - 1] == "y2") && oldc == c - 2 && posChip[r][c] == "n") {
+                            if (r == 7) {
+                                posChip[r][c] = "y3";
+                            }
+                            else {
+                                posChip[r][c] = posChip[oldpos][oldc];
+                            }
+                            posChip[r - 1][c - 1] = "n";
+                            posChip[oldpos][oldc] = "n";
+
+                            blue -= 1;
+                            if (r < 6) {
+                                if ((posChip[r + 1][c + 1] == "y1" || posChip[r + 1][c + 1] == "y2") && posChip[r + 2][c + 2] == "n") {
+
+                                    attack = "y";
+                                    turn2();
+
+                                }
+                                else if ((posChip[r + 1][c - 1] == "y1" || posChip[r + 1][c - 1] == "y2") && posChip[r + 2][c - 2] == "n") {
+
+                                    attack = "y";
+                                    turn2();
+                                }
+                                else {
+                                    turn = "player1";
+                                }
+                            }
+                            else {
+                                if (posChip[r][c] == "y3" && (posChip[r - 1][c + 1] == "y1" || posChip[r - 1][c + 1] == "y2") && posChip[r - 2][c + 2] == "n") {
+                                    attack = "y";
+                                    turn2();
+                                }
+                                else {
+                                    turn = "player1";
+                                }
+                            }
+
+                        }
+                        else if ((posChip[r - 1][c + 1] == "y1" || posChip[r - 1][c + 1] == "y2") && oldc == c + 2 && posChip[r][c] == "n") {
+
+                            if (r == 7) {
+                                posChip[r][c] = "y3";
+                            }
+                            else {
+                                posChip[r][c] = posChip[oldpos][oldc];
+                            }
+                            posChip[r - 1][c + 1] = "n";
+                            posChip[oldpos][oldc] = "n";
+
+                            blue -= 1;
+                            if (r < 6) {
+                                if ((posChip[r + 1][c - 1] == "y1" || posChip[r + 1][c - 1] == "y2") && posChip[r + 2][c - 2] == "n") {
+                                    attack = "y";
+                                    turn2();
+                                }
+                                else if ((posChip[r + 1][c + 1] == "y1" || posChip[r + 1][c + 1] == "y1") && posChip[r + 2][c + 2] == "n") {
+
+                                    attack = "y";
+                                    turn2();
+                                }
+                                else {
+                                    turn = "player1";
+                                }
+                            }
+                            else {
+                                if (posChip[r][c] == "y3" && (posChip[r - 1][c - 1] == "y1" || posChip[r - 1][c - 1] == "y2") && posChip[r - 2][c - 2] == "n") {
+                                    attack = "y";
+                                    turn2();
+                                }
+                                else {
+                                    turn = "player1";
+                                }
+                            }
+                        }
+                    }
+
+
+                    else if (posChip[oldpos][oldc] == "y3") {
+                        if (r < 6 && oldpos > r) {
+                            if ((posChip[r + 1][c + 1] == "y1" || posChip[r + 1][c + 1] == "y2") && oldc == c + 2 && posChip[r][c] == "n") {
+                                posChip[r][c] = posChip[oldpos][oldc];
+                                posChip[r + 1][c + 1] = "n";
+                                posChip[oldpos][oldc] = "n";
+                                blue -= 1;
+                                if (r > 1) {
+                                    if ((posChip[r - 1][c - 1] == "y1" || posChip[r - 1][c - 1] == "y2") && posChip[r - 2][c - 2] == "n") {
+                                        attack = "y";
+                                        turn2();
+                                    }
+                                    else if ((posChip[r - 1][c + 1] == "y1" || posChip[r - 1][c + 1] == "y2") && posChip[r - 2][c + 2] == "n") {
+                                        attack = "y";
+                                        turn2();
+                                    }
+                                    else if ((posChip[r + 1][c - 1] == "y1" || posChip[r + 1][c - 1] == "y2") && posChip[r + 2][c - 2] == "n") {
+                                        attack = "y";
+                                        turn2();
+                                    }
+                                    else if ((posChip[r + 1][c + 1] == "y1" || posChip[r + 1][c + 1] == "y2") && posChip[r + 2][c + 2] == "n") {
+                                        attack = "y";
+                                        turn2();
+                                    }
+                                    else {
+                                        turn = "player1";
+                                    }
+                                }
+                                else {
+                                    if ((posChip[r + 1][c - 1] == "y1" || posChip[r + 1][c - 1] == "y2") && posChip[r + 2][c - 2] == "n") {
+                                        attack = "y";
+                                        turn2();
+                                    }
+                                    else {
+                                        turn = "player1";
+                                    }
+                                }
+                            }
+
+
+
+                            else if ((posChip[r + 1][c - 1] == "y1" || posChip[r + 1][c - 1] == "y2") && oldc == c - 2 && posChip[r][c] == "n") {
+                                posChip[r][c] = posChip[oldpos][oldc];
+                                posChip[r + 1][c - 1] = "n";
+                                posChip[oldpos][oldc] = "n";
+                                blue -= 1;
+                                if (r > 1) {
+                                    if ((posChip[r - 1][c + 1] == "y1" || posChip[r - 1][c + 1] == "y2") && posChip[r - 2][c + 2] == "n") {
+                                        attack = "y";
+                                        turn2();
+                                    }
+                                    else if ((posChip[r - 1][c - 1] == "y1" || posChip[r - 1][c - 1] == "y2") && posChip[r - 2][c - 2] == "n") {
+                                        attack = "y";
+                                        turn2();
+                                    }
+                                    else if ((posChip[r + 1][c - 1] == "y1" || posChip[r + 1][c - 1] == "y2") && posChip[r + 2][c - 2] == "n") {
+                                        attack = "y";
+                                        turn2();
+                                    }
+                                    else if ((posChip[r + 1][c + 1] == "y1" || posChip[r + 1][c + 1] == "y1") && posChip[r + 2][c + 2] == "n") {
+                                        attack = "y";
+                                        turn2();
+                                    }
+                                    else {
+                                        turn = "player1";
+                                    }
+                                }
+
+                                else {
+                                    if ((posChip[r + 1][c + 1] == "y1" || posChip[r + 1][c + 1] == "y2") && posChip[r + 2][c + 2] == "n") {
+                                        attack = "y";
+                                        turn2();
+                                    }
+                                    else {
+                                        turn = "player1";
+                                    }
+                                }
+
+                            }
+                        }
+                        else if (r > 1 && oldpos < r) {
+                            if ((posChip[r - 1][c - 1] == "y1" || posChip[r - 1][c - 1] == "y2") && oldc == c - 2 && posChip[r][c] == "n" && oldpos < r) {
+                                posChip[r][c] = posChip[oldpos][oldc];
+                                posChip[r - 1][c - 1] = "n";
+                                posChip[oldpos][oldc] = "n";
+                                blue -= 1;
+                                if (r < 6) {
+                                    if ((posChip[r + 1][c + 1] == "y1" || posChip[r + 1][c + 1] == "y2") && posChip[r + 2][c + 2] == "n") {
+                                        attack = "y";
+                                        turn2();
+
+                                    }
+                                    else if ((posChip[r + 1][c - 1] == "y1" || posChip[r + 1][c - 1] == "y2") && posChip[r + 2][c - 2] == "n") {
+                                        turn = "player2";
+                                        attack = "y";
+                                        turn2();
+                                    }
+                                    else if ((posChip[r - 1][c - 1] == "y1" || posChip[r - 1][c - 1] == "y2") && posChip[r - 2][c - 2] == "n") {
+                                        turn = "player2";
+                                        attack = "y";
+                                        turn2();
+
+                                    }
+                                    else if ((posChip[r - 1][c + 1] == "y1" || posChip[r - 1][c + 1] == "y1") && posChip[r - 2][c + 2] == "n") {
+                                        attack = "y";
+                                        turn2();
+                                    }
+                                    else {
+                                        turn = "player1";
+                                    }
+                                }
+                                else {
+                                    if ((posChip[r - 1][c + 1] == "y1" || posChip[r - 1][c + 1] == "y2") && posChip[r - 2][c + 2] == "n") {
+                                        attack = "y";
+                                        turn2();
+                                    }
+                                    else {
+                                        turn = "player1";
+                                    }
+                                }
+
+                            }
+
+                            else if ((posChip[r - 1][c + 1] == "y1" || posChip[r - 1][c + 1] == "y2") && oldc == c + 2 && posChip[r][c] == "n" && oldpos < r) {
+                                posChip[r][c] = posChip[oldpos][oldc];
+                                posChip[r - 1][c + 1] = "n";
+                                posChip[oldpos][oldc] = "n";
+                                blue -= 1;
+                                if (r < 6) {
+                                    if ((posChip[r + 1][c - 1] == "y1" || posChip[r + 1][c - 1] == "y2") && posChip[r + 2][c - 2] == "n") {
+                                        turn = "player2";
+                                        attack = "y";
+                                        turn2();
+                                    }
+                                    else if ((posChip[r + 1][c + 1] == "y1" || posChip[r + 1][c + 1] == "y1") && posChip[r + 2][c + 2] == "n") {
+                                        attack = "y";
+                                        turn2();
+                                    }
+                                    else if ((posChip[r - 1][c - 1] == "y1" || posChip[r - 1][c - 1] == "y2") && posChip[r - 2][c - 2] == "n") {
+                                        attack = "y";
+                                        turn2();
+
+                                    }
+                                    else if ((posChip[r - 1][c + 1] == "y1" || posChip[r - 1][c + 1] == "y2") && posChip[r - 2][c + 2] == "n") {
+                                        attack = "y";
+                                        turn2();
+                                    }
+                                    else {
+                                        turn = "player1";
+                                    }
+                                }
+                                else {
+                                    if ((posChip[r - 1][c - 1] == "y1" || posChip[r - 1][c - 1] == "y2") && posChip[r - 2][c - 2] == "n") {
+                                        attack = "y";
+                                        turn2();
+                                    }
+                                    else {
+                                        turn = "player1";
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+
+
+                    if (posChip[r][c] == "n" && turn == "player2") {
+                        if (oldc == 0 && oldpos == r - 1 && c == 1) {
+                            if (c == 1) {
+                                if (r == 7) {
+                                    posChip[r][c] = "y3";
+                                }
+                                else {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+                                }
+
+                            }
+                            posChip[oldpos][oldc] = "n";
+                            turn = "player1";
+                        }
+                        else if (oldpos == r - 1 && oldc == 1 && (c == 0 || c == 2)) {
+                            if (c == 0) {
+                                if (r == 7) {
+                                    posChip[r][c] = "y3";
+                                }
+                                else {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+                                }
+                            }
+                            else if (c == 2) {
+                                if (r == 7) {
+                                    posChip[r][c] = "y3";
+                                }
+                                else {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+                                }
+                            }
+                            posChip[oldpos][oldc] = "n";
+                            turn = "player1";
+                        }
+                        else if (oldc == 2 && oldpos == r - 1 && (c == 1 || c == 3)) {
+                            if (c == 1) {
+                                if (r == 7) {
+                                    posChip[r][c] = "y3";
+                                }
+                                else {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+                                }
+                            }
+                            else if (c == 3) {
+                                if (r == 7) {
+                                    posChip[r][c] = "y3";
+                                }
+                                else {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+                                }
+                            }
+                            posChip[oldpos][oldc] = "n";
+                            turn = "player1";
+                        }
+                        else if (oldpos == r - 1 && oldc == 3 && (c == 2 || c == 4)) {
+                            if (c == 2) {
+                                if (r == 7) {
+                                    posChip[r][c] = "y3";
+                                }
+                                else {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+                                }
+                            }
+                            else if (c == 4) {
+                                if (r == 7) {
+                                    posChip[r][c] = "y3";
+                                }
+                                else {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+                                }
+                            }
+                            posChip[oldpos][oldc] = "n";
+                            turn = "player1";
+                        }
+                        else if (oldpos == r - 1 && oldc == 4 && (c == 3 || c == 5)) {
+                            if (c == 3) {
+                                if (r == 7) {
+                                    posChip[r][c] = "y3";
+                                }
+                                else {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+                                }
+                            }
+                            else if (c == 5) {
+                                if (r == 7) {
+                                    posChip[r][c] = "y3";
+                                }
+                                else {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+                                }
+                            }
+                            posChip[oldpos][oldc] = "n";
+                            turn = "player1";
+                        }
+                        else if (oldpos == r - 1 && oldc == 5 && (c == 4 || c == 6)) {
+                            if (c == 4) {
+                                if (r == 7) {
+                                    posChip[r][c] = "y3";
+                                }
+                                else {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+                                }
+                            }
+                            else if (c == 6) {
+                                if (r == 7) {
+                                    posChip[r][c] = "y3";
+                                }
+                                else {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+                                }
+                            }
+                            posChip[oldpos][oldc] = "n";
+                            turn = "player1";
+                        }
+                        else if (oldpos == r - 1 && oldc == 6 && (c == 5 || c == 7)) {
+                            if (c == 5) {
+                                if (r == 7) {
+                                    posChip[r][c] = "y3";
+                                }
+                                else {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+                                }
+                            }
+                            else if (c == 7) {
+                                if (r == 7) {
+                                    posChip[r][c] = "y3";
+                                }
+                                else {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+                                }
+                            }
+                            posChip[oldpos][oldc] = "n";
+                            turn = "player1";
+                        }
+                        else if (oldpos == r - 1 && oldc == 7 && c == 6) {
+                            if (c == 6) {
+                                if (r == 7) {
+                                    posChip[r][c] = "y3";
+                                }
+                                else {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+                                }
+                            }
+                            posChip[oldpos][oldc] = "n";
+                            turn = "player1";
+                        }
+
+                        ///////////////////////////////////////////////////////////////////////////
+
+
+                        else if (posChip[oldpos][oldc] == "y3") {
+
+                            if (oldc == 0 && oldpos == r + 1 && c == 1) {
+                                if (c == 1) {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+
+                                }
+                                posChip[oldpos][oldc] = "n";
+                                turn = "player1";
+                            }
+                            else if (oldc == 1 && oldpos == r + 1) {
+                                if (c == 0) {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+
+                                }
+                                else if (c == 2) {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+
+                                }
+                                posChip[oldpos][oldc] = "n";
+                                turn = "player1";
+
+                            }
+                            else if (oldc == 2 && oldpos == r + 1 && (c == 1 || c == 3)) {
+                                if (c == 1) {
+
+                                    posChip[r][c] = posChip[oldpos][oldc];
+                                }
+                                else if (c == 3) {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+
+                                }
+
+                                posChip[oldpos][oldc] = "n";
+                                turn = "player1";
+                            }
+                            else if (oldc == 3 && oldpos == r + 1 && (c == 2 || c == 4)) {
+                                if (c == 2) {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+
+                                }
+                                else if (c == 4) {
+
+                                    posChip[r][c] = posChip[oldpos][oldc];
+
+                                }
+                                posChip[oldpos][oldc] = "n";
+                                turn = "player1";
+                            }
+                            else if (oldc == 4 && oldpos == r + 1 && (c == 3 || c == 5)) {
+                                if (c == 3) {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+                                }
+                                else if (c == 5) {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+                                }
+                                posChip[oldpos][oldc] = "n";
+                                turn = "player1";
+                            }
+
+                            else if (oldc == 5 && oldpos == r + 1 && (c == 4 || c == 6)) {
+                                if (c == 4) {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+                                }
+                                else if (c == 6) {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+                                }
+                                posChip[oldpos][oldc] = "n";
+                                turn = "player1";
+                            }
+                            else if (oldc == 6 && oldpos == r + 1 && (c == 5 || c == 7)) {
+                                if (c == 5) {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+                                }
+                                else if (c == 7) {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+                                }
+                                posChip[oldpos][oldc] = "n";
+                                turn = "player1";
+                            }
+                            else if (oldc == 7 && oldpos == r + 1 && c == 6) {
+                                if (c == 6) {
+                                    posChip[r][c] = posChip[oldpos][oldc];
+                                }
+                                posChip[oldpos][oldc] = "n";
+                                turn = "player1";
+                            }
+
+
+
+                        }
+
+
+
+
+
+                    }
+
+                }
+
+
+
+
+            }
+            drawgame();
+        }
+
+    </script>
+    <p id="show2"></p>
+    <p id="show1"></p>
+
+
+
+</body>
+
+
+</html>

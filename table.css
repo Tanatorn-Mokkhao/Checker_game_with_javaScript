@@ -1,0 +1,92 @@
+
+body
+{
+    background-color: cadetblue;
+    margin: 0;
+padding: 0;  
+}
+
+
+
+.table table
+{
+  
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) ;
+    transform-origin: bottom left;
+    background: #ddd;
+}
+
+.table table::before
+{
+    content: '';
+    position: absolute;
+    top:10px;
+    left:-20px;
+    height: 100%;
+    width:25px;
+    background-image: url("1.jpg");
+    background-size: 5px;
+    transform:  rotate(0deg) skewY(-45deg);
+    box-shadow: -20px 20px 20px rgb(0,0,0,.5);
+
+ 
+
+}
+.table table::after
+{
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left:-10px;
+    height: 25px;
+    width:100%;
+    background-image: url("1.jpg");
+    background-size: 120;
+    transform:  rotate(0deg) skewx(-45deg);
+    box-shadow: -20px 20px 20px rgb(0,0,0,.5);
+
+}
+
+.back *
+{
+    display: inline;
+   
+   
+}
+.back p1
+{
+    margin-left: 10%;
+text-transform: uppercase;
+font-weight: bold;
+font-size:50px;
+font-family:courier,arial,helvetica;
+color: aliceblue;
+cursor: pointer;
+
+}
+.back p2
+{
+    margin-left: 25%;
+text-transform: uppercase;
+font-weight: bold;
+font-size:50px;
+font-family:courier,arial,helvetica;
+color: aliceblue;
+cursor: pointer;
+
+}
+
+.back p3
+{
+    margin-left: 20%;
+text-transform: uppercase;
+font-weight: bold;
+font-size:50px;
+font-family:courier,arial,helvetica;
+color: aliceblue;
+cursor: pointer;
+
+}

@@ -1,0 +1,216 @@
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+    <section>
+        <div class="pattern">
+            <div class="face face1"></div>
+            <div class="face face2"></div>
+
+
+        </div>
+
+    </section>
+    <div class="button1">
+        <button onclick="playbot()">Play 1 vs bot</button>
+    </div>
+    <div class="button2">
+        <button onclick="play()">Play 1 vs 1</button>
+    </div>
+    <div class="button3">
+        <button data-modal-target="#modal">Option</button>
+    </div>
+    <div class="modal" id="modal">
+        <div class="modal-header">
+            <div class="title"><img src="cog.png" width="50" height="50"> setting</div>
+            <button data-close-button class="close-button">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>
+                <button onclick="actionclick(0)">table</button>
+                <button onclick="chips(0)">chips player1</button>
+                <button onclick="chips2(0)">chips player2</button>
+                <button onclick="botmode(0)">Bot</button>
+            </p>
+            <p id="show">
+
+            </p>
+
+
+
+
+        </div>
+    </div>
+    <div id="overlay"></div>
+    <script>
+        const openModalButtons = document.querySelectorAll('[data-modal-target]')
+        const closeModalButtons = document.querySelectorAll('[data-close-button]')
+        const overlay = document.getElementById('overlay')
+
+        openModalButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const modal = document.querySelector(button.dataset.modalTarget)
+                openModal(modal)
+            })
+        })
+
+        overlay.addEventListener('click', () => {
+            const modals = document.querySelectorAll('.modal.active')
+            modals.forEach(modal => {
+                closeModal(modal)
+            })
+        })
+
+        closeModalButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const modal = button.closest('.modal')
+                closeModal(modal)
+            })
+        })
+
+        function openModal(modal) {
+            if (modal == null) return
+            modal.classList.add('active')
+            overlay.classList.add('active')
+        }
+
+        function closeModal(modal) {
+            if (modal == null) return
+            modal.classList.remove('active')
+            overlay.classList.remove('active')
+        }
+        c = 0;
+        color1 = "white";
+        color2 = "black";
+        document.getElementById('show').innerHTML = "  <img src=type3.png width=500 height=350>     <p> <img src=left.png onclick= actionclick(-1)  width=40 height=40> <img src=right.png onclick=actionclick(1) width=40 height=40></p>";
+        // document.getElementById('show1').innerHTML = "<button onclick=actionclick(0)>table</button>";
+        // document.getElementById('show2').innerHTML = "<button onclick=actionclick(0)>table</button>";
+        function actionclick(n) {
+            c = c + n;
+            if (c == 0) {
+                document.getElementById('show').innerHTML = "  <img src=type3.png width=500 height=350> <p> <img src=left.png onclick= actionclick(-1)  width=40 height=40> <img src=right.png onclick=actionclick(1) width=40 height=40></p>";
+
+                color1 = "white";
+                color2 = "black";
+            }
+
+            else if (c == 1) {
+                document.getElementById('show').innerHTML = "  <img src=type2.png width=500 height=350> <p> <img src=left.png onclick= actionclick(-1)  width=40 height=40> <img src=right.png onclick=actionclick(1) width=40 height=40></p>";
+                color1 = "cec093";
+                color2 = "79421b";
+            }
+            else if (c == 2) {
+                document.getElementById('show').innerHTML = "  <img src=type4.png width=500 height=350> <p> <img src=left.png onclick= actionclick(-1)  width=40 height=40> <img src=right.png onclick=actionclick(1) width=40 height=40></p>";
+                color1 = "fec286";
+                color2 = "630d00";
+
+            }
+            else if (c < 0) {
+                c = 0;
+            }
+            else if (c > 2) {
+                c = 2;
+            }
+        }
+        c1 = 0
+        chip1 = "chip/chip2.png";
+        chip2 = "chip/crown1.png";
+        function chips(n) {
+            c1 = c1 + n;
+            if (c1 == 0) {
+                document.getElementById('show').innerHTML = "<p> <br> <br><br><img src=chip/chip2.png width=150 height=150><img src=chip/crown1.png width=150 height=150> </p><img src=left.png onclick=chips(-1)  width=40 height=40> <img src=right.png onclick=chips(1) width=40 height=40></p>";
+                chip1 = "chip/chip2.png";
+                chip2 = "chip/crown1.png";
+            }
+            else if (c1 == 1) {
+                document.getElementById('show').innerHTML = "<p> <br> <br><br><img src=chip/chip3.png width=150 height=140> <img src=chip/crown2.png width=150 height=140> </p><img src=left.png onclick=chips(-1)  width=40 height=40> <img src=right.png onclick=chips(1) width=40 height=40></p>";
+                chip1 = "chip/chip3.png";
+                chip2 = "chip/crown2.png";
+            }
+            else if (c1 == 2) {
+                document.getElementById('show').innerHTML = "<p> <br> <br><br><img src=chip/chip.png width=150 height=140> <img src=chip/crown3.png width=150 height=140> </p><img src=left.png onclick=chips(-1)  width=40 height=40> <img src=right.png onclick=chips(1) width=40 height=40></p>";
+                chip1 = "chip/chip.png";
+                chip2 = "chip/crown3.png";
+            }
+            else if (c1 == 3) {
+                document.getElementById('show').innerHTML = "<p> <br> <br><br><img src=chip/chip4.png width=150 height=140> <img src=chip/crown4.png width=150 height=140> </p><img src=left.png onclick=chips(-1)  width=40 height=40> <img src=right.png onclick=chips(1) width=40 height=40></p>";
+                chip1 = "chip/chip4.png";
+                chip2 = "chip/crown4.png";
+            }
+            else if (c1 < 0) {
+                c1 = 0;
+            }
+            else if (c1 > 3) {
+                c1 = 3;
+            }
+
+        }
+        c2 = 0;
+        chip3 = "chip/chip.png";
+        chip4 = "chip/crown3.png";
+        function chips2(n) {
+            c2 = c2 + n;
+            if (c2 == 0) {
+                document.getElementById('show').innerHTML = "<p> <br> <br><br><img src=chip/chip.png width=150 height=140> <img src=chip/crown3.png width=150 height=140> </p><img src=left.png onclick=chips2(-1)  width=40 height=40> <img src=right.png onclick=chips2(1) width=40 height=40></p>";
+                chip3 = "chip/chip.png";
+                chip4 = "chip/crown3.png";
+            }
+            else if (c2 == 1) {
+                document.getElementById('show').innerHTML = "<p> <br> <br><br><img src=chip/chip3.png width=150 height=140> <img src=chip/crown2.png width=150 height=140> </p><img src=left.png onclick=chips2(-1)  width=40 height=40> <img src=right.png onclick=chips2(1) width=40 height=40></p>";
+                chip3 = "chip/chip3.png";
+                chip4 = "chip/crown2.png";
+            }
+            else if (c2 == 2) {
+                document.getElementById('show').innerHTML = "<p> <br> <br><br><img src=chip/chip2.png width=150 height=140> <img src=chip/crown1.png width=150 height=140> </p><img src=left.png onclick=chips2(-1)  width=40 height=40> <img src=right.png onclick=chips2(1) width=40 height=40></p>";
+                chip3 = "chip/chip2.png";
+                chip4 = "chip/crown1.png";
+            }
+            else if (c2 == 3) {
+                document.getElementById('show').innerHTML = "<p> <br> <br><br><img src=chip/chip4.png width=150 height=140> <img src=chip/crown4.png width=150 height=140> </p><img src=left.png onclick=chips2(-1)  width=40 height=40> <img src=right.png onclick=chips2(1) width=40 height=40></p>";
+                chip3 = "chip/chip4.png";
+                chip4 = "chip/crown4.png";
+            }
+            else if (c2 < 0) {
+                c2 = 0;
+            }
+            else if (c2 > 3) {
+                c2 = 3;
+            }
+
+        }
+        function play() {
+
+            window.location.href = "checkers.html?" + color1 + "&" + color2 + "&" + chip1 + "&" + chip2 + "&" + chip3 + "&" + chip4 + "";
+        }
+        bot = "boteasy.html";
+        b1 = 0;
+        function botmode(n) {
+            b1 += n;
+            if (b1 == 0) {
+                document.getElementById('show').innerHTML = "<p> <br> <br><br><img src=bot.png width=150 height=140>  </p><p>Easy</p><img src=left.png onclick=botmode(-1)  width=40 height=40> <img src=right.png onclick=botmode(1) width=40 height=40></p>";
+                bot = "boteasy.html";
+            }
+            else if (b1 == 1) {
+                document.getElementById('show').innerHTML = "<p> <br> <br><br><img src=bothard.png width=150 height=140>  </p><p>Hard</p><img src=left.png onclick=botmode(-1)  width=40 height=40> <img src=right.png onclick=botmode(1) width=40 height=40></p>";
+                bot = "bothard.html";
+            }
+            else if (b1 < 0) {
+                b1 = 0;
+            }
+            else if (b1 > 1) {
+                b1 = 1;
+            }
+        }
+        function playbot() {
+
+            window.location.href = "" + bot + "?" + color1 + "&" + color2 + "&" + chip1 + "&" + chip2 + "";
+        }
+    </script>
+</body>
+
+
+</html>
